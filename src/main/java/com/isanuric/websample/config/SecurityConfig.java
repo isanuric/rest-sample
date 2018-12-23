@@ -30,7 +30,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/**", "/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/anonymous").anonymous()
                 .anyRequest().authenticated()
@@ -38,21 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login")
-//                .loginProcessingUrl("/mylogin")
-//                .defaultSuccessUrl("/welcome.html", true)
-//                .failureUrl("/login.html?error=true")
-//                .failureHandler((httpServletRequest, httpServletResponse, e) -> {
-//                    throw new BadCredentialsException("failed");
-//                });
 
                 .and()
                 .httpBasic();
-
-//                .and()
-//                .logout()
-//                .logoutUrl("/perform_logout")
-//                .deleteCookies("JSESSIONID")
-//                .logoutSuccessHandler(logoutSuccessHandler());
     }
 
     @Override
