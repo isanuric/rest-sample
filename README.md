@@ -1,1 +1,1 @@
-web-sampe
+web-sample
