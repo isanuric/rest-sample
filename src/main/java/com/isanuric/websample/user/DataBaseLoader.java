@@ -1,5 +1,6 @@
 package com.isanuric.websample.user;
 
+import java.util.stream.Stream;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,11 @@ public class DataBaseLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        this.userRepository.save(new User("test01", "testlastname", "description"));
+
+        Stream.of("user01", "user02", "user03", "user04", "user05", "user06", "user07")
+                .forEach(user -> this.userRepository.save(new User(user)));
+
+        this.userRepository.findAll().forEach(System.out::println);
 
     }
 }

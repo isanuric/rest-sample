@@ -12,22 +12,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Entity
 @Data
 public class User {
 
     private @Id @GeneratedValue Long id;
-    private String firstName;
-    private String lastName;
+    private @NonNull String name;
     private String description;
 
-    private User() {
-    }
-
-    public User(String firstName, String lastName, String description) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.description = description;
-    }
 }
