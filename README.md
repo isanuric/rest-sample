@@ -1,6 +1,6 @@
-##web-sample
+## web-sample
 
-A simple Rest application with spring boot.
+A simple REST API with spring boot.
 
 
 ### Quick Start
