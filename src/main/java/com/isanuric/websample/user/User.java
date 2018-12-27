@@ -1,11 +1,8 @@
 package com.isanuric.websample.user;
 
 /*
- * ----------------------------------------------
- * (c) 2018 Copyright iC Consult GmbH
- * <p/>
  * Project: web-sample
- * @author ehsan.salmani@ic-consult.de on 23/12/2018.
+ * @author Ehsan Salmani
  */
 
 import javax.persistence.Entity;
