@@ -1,13 +1,13 @@
-## web-sample
+## rest-sample
 
 A simple REST API with spring boot.
 
 
 ### Quick Start
-`$ git clone git@github.com:isanuric/web-sample.git
+`$ git clone git@github.com:isanuric/rest-sample.git
 `
 
-`$ cd web-sample
+`$ cd rest-sample
 `
 
 `$ mvn clean install
