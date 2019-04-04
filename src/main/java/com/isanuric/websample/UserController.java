@@ -13,13 +13,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /*
  * Project: web-sample
  * @author Ehsan Salmani
  */
+
+
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     private UserRepository userRepository;
@@ -28,25 +33,24 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/users")
+    @GetMapping("/all")
     public Iterable<User> getAllUser() {
         return this.userRepository.findAll();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public Optional<User> getUserById(@PathVariable Long id) {
         return this.userRepository.findById(id);
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<User> addUser(@Valid @RequestBody String user)
-            throws MalformedURLException, URISyntaxException {
-        User newUser = this.userRepository.save(new User(user));
-        return ResponseEntity.created(new URI("/user/" + newUser.getId()))
-                .body(newUser);
+    @PostMapping("/create")
+    public ResponseEntity<User> addNewUser(@Valid @RequestParam String name)
+            throws  URISyntaxException {
+        User newUser = this.userRepository.save(new User(name));
+        return ResponseEntity.created(new URI("/user/" + newUser.getId())).body(newUser);
     }
 
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         this.userRepository.deleteById(id);
         return ResponseEntity.ok().build();

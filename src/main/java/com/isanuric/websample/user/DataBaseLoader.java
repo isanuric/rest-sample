@@ -24,7 +24,6 @@ public class DataBaseLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         Stream.of("user01", "user02", "user03", "user04", "user05", "user06", "user07", "user08")
                 .forEach(user -> this.userRepository.save(new User(user)));
     }
