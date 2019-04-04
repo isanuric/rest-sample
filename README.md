@@ -13,10 +13,14 @@ A simple REST API with spring boot.
 `$ mvn clean install
 `
 
+run integration tests.
+
+or: 
+
 `$ mvn spring-boot:run
 `
 
-In your browser:
+On your browser:
 
 `localhost/8080
 `

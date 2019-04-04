@@ -13,27 +13,33 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-public class WebSampleApplicationTests {
+public class IntegrationUserControllerTests {
+
+    @Autowired
+    protected WebTestClient webTestClient;
 
     private static final int TESTUSER_1 = 0;
     private static final int TESTUSER_2 = 1;
     private static final int TESTUSER_3 = 2;
-    private static final int ALLUSER_LENGTH = 8;
-    @Autowired
-    protected WebTestClient webTestClient;
+    private static final int ALLUSER_LENGTH = 11;
 
     @Test
+    @DisplayName("Get all user")
     public void getAllUser() {
         webTestClient
-                .get().uri("/users")
+                .get().uri("/user/all")
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBodyList(User.class).consumeWith(v -> {
+            System.out.println(v);
             assertThat(v.getResponseBody().size() == ALLUSER_LENGTH).isTrue();
             assertThat(v.getResponseBody().get(TESTUSER_1).getId() == 1).isTrue();
             assertThat(v.getResponseBody().get(TESTUSER_2).getId() == 2).isTrue();
@@ -56,7 +62,7 @@ public class WebSampleApplicationTests {
             "7",
             "8",
     })
-    @DisplayName("check all eight test user")
+    @DisplayName("Check eight first user")
     public void getUserById(int uid) {
         webTestClient
                 .get().uri("/user/" + uid)
@@ -65,6 +71,27 @@ public class WebSampleApplicationTests {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBodyList(User.class).consumeWith(v -> {
             assertThat(v.getResponseBody().get(0).getId() == uid).isTrue();
+        });
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "testUser10",
+            "testUser11",
+            "testUser12",
+    })
+    @DisplayName("Add three new user")
+    public void addNewUser(String uid) {
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        body.add("uid", uid);
+        webTestClient
+                .post().uri("/user/create")
+                .body(BodyInserters.fromFormData("name", uid))
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
+                .expectBodyList(User.class).consumeWith(v -> {
+            assertThat(v.getResponseBody().get(0).getName().equals(uid)).isTrue();
         });
     }
 
