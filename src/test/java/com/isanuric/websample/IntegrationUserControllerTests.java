@@ -20,7 +20,7 @@ import org.springframework.web.reactive.function.BodyInserters;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
-public class IntegrationUserControllerTests {
+class IntegrationUserControllerTests {
 
     @Autowired
     protected WebTestClient webTestClient;
@@ -32,7 +32,7 @@ public class IntegrationUserControllerTests {
 
     @Test
     @DisplayName("Get all user")
-    public void getAllUser() {
+    void getAllUser() {
         webTestClient
                 .get().uri("/user/all")
                 .exchange()
@@ -40,13 +40,13 @@ public class IntegrationUserControllerTests {
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBodyList(User.class).consumeWith(v -> {
             System.out.println(v);
-            assertThat(v.getResponseBody().size() == ALLUSER_LENGTH).isTrue();
-            assertThat(v.getResponseBody().get(TESTUSER_1).getId() == 1).isTrue();
-            assertThat(v.getResponseBody().get(TESTUSER_2).getId() == 2).isTrue();
-            assertThat(v.getResponseBody().get(TESTUSER_3).getId() == 3).isTrue();
-            assertThat(v.getResponseBody().get(TESTUSER_1).getName().equals("user01")).isTrue();
-            assertThat(v.getResponseBody().get(TESTUSER_2).getName().equals("user02")).isTrue();
-            assertThat(v.getResponseBody().get(TESTUSER_3).getName().equals("user03")).isTrue();
+            assertThat(v.getResponseBody().size()).isSameAs(ALLUSER_LENGTH);
+            assertThat(v.getResponseBody().get(TESTUSER_1).getId()).isEqualTo(1);
+            assertThat(v.getResponseBody().get(TESTUSER_2).getId()).isEqualTo(2);
+            assertThat(v.getResponseBody().get(TESTUSER_3).getId()).isEqualTo(3);
+            assertThat(v.getResponseBody().get(TESTUSER_1).getName()).isEqualTo("user01");
+            assertThat(v.getResponseBody().get(TESTUSER_2).getName()).isEqualTo("user02");
+            assertThat(v.getResponseBody().get(TESTUSER_3).getName()).isEqualTo("user03");
 
         });
     }
@@ -62,15 +62,15 @@ public class IntegrationUserControllerTests {
             "7",
             "8",
     })
-    @DisplayName("Check eight first user")
-    public void getUserById(int uid) {
+    @DisplayName("Check eight first users")
+    void getUserById(int uid) {
         webTestClient
                 .get().uri("/user/" + uid)
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBodyList(User.class).consumeWith(v -> {
-            assertThat(v.getResponseBody().get(0).getId() == uid).isTrue();
+            assertThat(v.getResponseBody().get(0).getId()).isEqualTo(uid);
         });
     }
 
@@ -81,7 +81,7 @@ public class IntegrationUserControllerTests {
             "testUser12",
     })
     @DisplayName("Add three new user")
-    public void addNewUser(String uid) {
+    void addNewUser(String uid) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("uid", uid);
         webTestClient
@@ -91,7 +91,7 @@ public class IntegrationUserControllerTests {
                 .expectStatus().is2xxSuccessful()
                 .expectHeader().contentType(MediaType.APPLICATION_JSON_UTF8)
                 .expectBodyList(User.class).consumeWith(v -> {
-            assertThat(v.getResponseBody().get(0).getName().equals(uid)).isTrue();
+            assertThat(v.getResponseBody().get(0).getName()).isEqualTo(uid);
         });
     }
 
